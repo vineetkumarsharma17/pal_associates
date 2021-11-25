@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,7 +53,7 @@ Future<void> showExitDialog(String msg,String detail,BuildContext context) async
                       (){
                     // Navigator.of(context).pop();
                     // showSnackBar("after timer",context);
-                    //exit(0);
+                        SystemNavigator.pop();
                   });
 
             },

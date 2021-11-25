@@ -31,135 +31,138 @@ class _LoginScreenState extends State<LoginScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-        title: Text("Pal Associations"),
+        title: const Text("Pal Associates"),
     // automaticallyImplyLeading: false,
     ),
     drawer: MyDrawer(),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.05,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: screenHeight * 0.05,
+              ),
+              Image.asset(
+                'assets/images/registration.png',
+                height: screenHeight * 0.2,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+
+              const Text(
+                'Log  In',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.teal,
+                  fontFamily: "Anton",
                 ),
-                Image.asset(
-                  'assets/images/registration.png',
-                  height: screenHeight * 0.3,
-                  fit: BoxFit.contain,
+              ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              const Text(
+                'Enter your mobile number to receive a verification code',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
                 ),
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-                const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 28, color: Colors.black),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-                const Text(
-                  'Enter your mobile number to receive a verification code',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.04,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: screenWidth > 600 ? screenWidth * 0.2 : 16),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      boxShadow: [
-                        const BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(16.0)),
-                  child: Column(
-                    children: [
-                      loading?Container(
-                        margin: const EdgeInsets.all(8),
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        height: 45,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 253, 188, 51),
-                          ),
-                          borderRadius: BorderRadius.circular(36),
-                        ),
-                        child: Row(
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                            SizedBox(
-                              width: screenWidth * 0.01,
-                            ),
-                            Expanded(
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                  hintText: 'Contact Number',
-                                  border: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  prefixText: "+91",
-                                  contentPadding: EdgeInsets.symmetric(vertical: 13.5),
-                                ),
-                                controller: cnumber,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [LengthLimitingTextInputFormatter(10)],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ):const CircularProgressIndicator(
-                        color: Colors.yellow,
-                        backgroundColor: Colors.teal,
-                        strokeWidth: 5,
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      GestureDetector(
-                        onTap: (){
-                          mobile=cnumber.text;
-                         if(validate()){
-                           setState(() {
-                             loading=false;
-                           });
-                           checkUser();
-                         }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          height: 45,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 253, 188, 51),
-                            borderRadius: BorderRadius.circular(36),
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Send OTP',
-                            style: TextStyle(color: Colors.black, fontSize: 16.0),
-                          ),
-                        ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.04,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: screenWidth > 600 ? screenWidth * 0.2 : 16),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    boxShadow: [
+                      const BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 6.0,
                       ),
                     ],
-                  ),
-                )
-              ],
-            ),
+                    borderRadius: BorderRadius.circular(16.0)),
+                child: Column(
+                  children: [
+                    loading?Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      height: 45,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 253, 188, 51),
+                        ),
+                        borderRadius: BorderRadius.circular(36),
+                      ),
+                      child: Row(
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          SizedBox(
+                            width: screenWidth * 0.01,
+                          ),
+                          Expanded(
+                            child: TextField(
+                              decoration: const InputDecoration(
+                                hintText: 'Contact Number',
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                prefixText: "+91",
+                                contentPadding: EdgeInsets.symmetric(vertical: 13.5),
+                              ),
+                              controller: cnumber,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ):const CircularProgressIndicator(
+                      color: Colors.yellow,
+                      backgroundColor: Colors.teal,
+                      strokeWidth: 5,
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        mobile=cnumber.text;
+                       if(validate()){
+                         setState(() {
+                           loading=false;
+                         });
+                         checkUser();
+                       }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(8),
+                        height: 45,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 253, 188, 51),
+                          borderRadius: BorderRadius.circular(36),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Send OTP',
+                          style: TextStyle(color: Colors.black, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

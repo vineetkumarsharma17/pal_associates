@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pal_associates">
    <application
-        android:label="pal_associates"
+        android:label="Pal Associates"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity

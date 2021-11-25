@@ -29,115 +29,118 @@ class _OtpScreenState extends State<OtpScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-        title: Text("Pal Associations"),
+        title: const Text("Pal Associates"),
     // automaticallyImplyLeading: false,
     ),
     drawer: MyDrawer(),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(16.0),
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.05,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Image.asset(
+                'assets/images/verification.png',
+                height: screenHeight * 0.2,
+                fit: BoxFit.contain,
+              ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              const Text(
+                'VERIFICATION',
+                style: TextStyle(
+                  fontSize: 28,
+                  letterSpacing: 4,
+                  color: Colors.teal,
+                  fontFamily: "Anton",
                 ),
-                Image.asset(
-                  'assets/images/verification.png',
-                  height: screenHeight * 0.3,
-                  fit: BoxFit.contain,
+              ),
+              SizedBox(
+                height: screenHeight * 0.01,
+              ),
+               Text(
+                //TODO number lagana hai
+                'Enter a 6 digit number that was sent to ${widget.mobile}',
+                // 'Enter A 6 digit number that was sent to ',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.black,
                 ),
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-                const Text(
-                  'Verification',
-                  style: TextStyle(fontSize: 28, color: Colors.black),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.02,
-                ),
-                 Text(
-                  //TODO number lagana hai
-                  'Enter A 6 digit number that was sent to ${widget.mobile}',
-                  // 'Enter A 6 digit number that was sent to ',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.04,
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      boxShadow: [
-                        const BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0.0, 1.0), //(x,y)
-                          blurRadius: 6.0,
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(16.0)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        // margin: EdgeInsets.only(left: screenWidth * 0.025),
-                        child:loading? PinEntryTextField(
-                          showFieldAsBox: true,
-                          fields: 6,
-                          onSubmit: (text) {
-                            smsOTP = text as String;
-                          },
-                        ):const CircularProgressIndicator(
-                          color: Colors.yellow,
-                          backgroundColor: Colors.teal,
-                          strokeWidth: 5,
-                        ),
-                      ),
-                      SizedBox(
-                        height: screenHeight * 0.04,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          print(smsOTP);
-                         if(validate()){
-                           setState(() {
-                             loading=false;
-                           });
-                           verifyOTP();
-                         }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          height: 45,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 253, 188, 51),
-                            borderRadius: BorderRadius.circular(36),
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Verify',
-                            style: TextStyle(color: Colors.black, fontSize: 16.0),
-                          ),
-                        ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    boxShadow: [
+                      const BoxShadow(
+                        color: Colors.grey,
+                        offset: Offset(0.0, 1.0), //(x,y)
+                        blurRadius: 6.0,
                       ),
                     ],
-                  ),
-                )
-              ],
-            ),
+                    borderRadius: BorderRadius.circular(16.0)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      // margin: EdgeInsets.only(left: screenWidth * 0.025),
+                      child:loading? PinEntryTextField(
+                        showFieldAsBox: true,
+                        fields: 6,
+                        onSubmit: (text) {
+                          smsOTP = text as String;
+                        },
+                      ):const CircularProgressIndicator(
+                        color: Colors.yellow,
+                        backgroundColor: Colors.teal,
+                        strokeWidth: 5,
+                      ),
+                    ),
+                    SizedBox(
+                      height: screenHeight * 0.04,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print(smsOTP);
+                       if(validate()){
+                         setState(() {
+                           loading=false;
+                         });
+                         verifyOTP();
+                       }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(8),
+                        height: 45,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 253, 188, 51),
+                          borderRadius: BorderRadius.circular(36),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Verify',
+                          style: TextStyle(color: Colors.black, fontSize: 16.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),

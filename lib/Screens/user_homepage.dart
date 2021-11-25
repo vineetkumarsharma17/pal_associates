@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:pal_associates/component/alertdilog.dart';
+import 'package:pal_associates/component/component.dart';
 import 'package:pal_associates/component/drawer.dart';
+import 'package:pal_associates/component/snack_bar.dart';
 class UserScreenHome extends StatefulWidget {
   const UserScreenHome({Key? key}) : super(key: key);
 
@@ -12,6 +17,46 @@ class UserScreenHome extends StatefulWidget {
 class _UserScreenHomeState extends State<UserScreenHome> {
   String query='';
   bool loading=true;
+  var cquery=TextEditingController();
+  search()async{
+    setState(() {
+      loading=false;
+    });
+    query=cquery.text;
+    var data = {
+      "data": query,
+    };
+    var response = await http.post(
+        Uri.parse(
+            "http://vkwilson.email/getdata.php"),
+        body: json.encode(data)).catchError((e){
+      setState(() {
+        loading=true;
+      });
+      if(e is SocketException)
+        return showSnackBar("No internet connection", context);
+    });
+    var obj = jsonDecode(response.body);
+    if(obj["status"]==1){
+      Map tmp=obj["data"];
+      print("Data========================");
+      String detail='';
+      for( var x in tmp.keys) {
+        detail=detail+"$x=${tmp[x]}\n";
+        // print("$x=${tmp[x]}");
+
+      }
+      showDataDialog("Data Found!",detail,context);
+      // print(detail);
+    }
+    else{
+      showSnackBar("No data found", context);
+    }
+    setState(() {
+      cquery.clear();
+      loading=true;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -40,7 +85,7 @@ class _UserScreenHomeState extends State<UserScreenHome> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                height: screenHeight * 0.05,
+                height: screenHeight * 0.02,
               ),
               Image.asset(
                 'assets/images/registration.png',
@@ -60,9 +105,6 @@ class _UserScreenHomeState extends State<UserScreenHome> {
               ),
               SizedBox(
                 height: screenHeight * 0.02,
-              ),
-              SizedBox(
-                height: screenHeight * 0.04,
               ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: screenWidth > 600 ? screenWidth * 0.2 : 16),
@@ -98,6 +140,7 @@ class _UserScreenHomeState extends State<UserScreenHome> {
                           ),
                           Expanded(
                             child: TextField(
+                              controller: cquery,
                               decoration: const InputDecoration(
                                 hintText: 'Vehicle Number',
                                 border: InputBorder.none,
@@ -124,13 +167,13 @@ class _UserScreenHomeState extends State<UserScreenHome> {
                     ),
                     GestureDetector(
                       onTap: (){
+
+                      if(validate())  {
                         setState(() {
                           loading=!loading;
                         });
-                        // if(validate()){
-                        //
-                        //   checkUser();
-                        // }
+                          search();
+                        }
                       },
                       child: Container(
                         margin: const EdgeInsets.all(8),
@@ -155,5 +198,13 @@ class _UserScreenHomeState extends State<UserScreenHome> {
         ),
       ),
     );
+  }
+  bool validate(){
+    query=cquery.text;
+    if(query.isEmpty) {
+      showSnackBar("Please insert Data", context);
+      return false;
+    }
+    return true;
   }
 }

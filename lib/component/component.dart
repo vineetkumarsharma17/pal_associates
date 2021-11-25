@@ -11,14 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'alertdilog.dart';
-logoutActionButton(context){
-  return FloatingActionButton(
-    child: Icon(Icons.logout),
-      onPressed:()async{
-  showExitDialog("Alert!", "Are you sure to exit?", context);
-   //exit(0);
-  });
-}
 buttonStyle(){
   return ButtonStyle(
       minimumSize: MaterialStateProperty.all(Size(120, 40)),
@@ -102,7 +94,7 @@ Future<void> AddUserDialog( msg, detail,mobile, context) async {
    }).then((value) {
      Navigator.of(context).pop();
      showSnackBar("Invited SuccessFully!", context);
-     String msg = "I Invited you on Pal Associates app .Please download our app from https://vkwilson.email/";
+     String msg = "I Invited you on Pal Associates app .Please download our app from http://vkwilson.email/";
      openwhatsapp(msg, context);
      // Navigator.of(context).pop();
    }).catchError((error) {

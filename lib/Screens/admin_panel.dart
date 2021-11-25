@@ -31,7 +31,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pal Associations"),
+        title: const Text("Pal Associates"),
         actions:  [
           Padding(
               padding: const EdgeInsets.only(right: 15.0),
@@ -188,7 +188,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.person_add),
+                              Icon(Icons.admin_panel_settings_outlined),
                               Text("Invite as",style: text_style,),
                               Text("Admin",style: text_style,),
                             ],
@@ -235,7 +235,9 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.person_add),
+                                Icon(
+                                  Icons.verified_outlined,
+                                ),
                                 Text("Check",style: text_style,),
                                 Text("Number",style: text_style,),
                               ],
@@ -274,7 +276,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.person_add),
+                                Icon(Icons.block_flipped),
                                 Text("Block",style: text_style,),
                                 Text("User",style: text_style,),
                               ],
@@ -283,7 +285,39 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                         ),
                       ],
                     ),
-
+                    GestureDetector(onTap: (){
+                        uploaddata();
+                    },
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0.0, 1.0), //(x,y)
+                              blurRadius: 6.0,
+                            ),
+                          ],
+                          border: Border.all(
+                            width: 2,
+                            color: const Color.fromARGB(255, 253, 188, 51),
+                          ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(36),
+                        ),
+                        margin: EdgeInsets.all(10),
+                        width: screenWidth*.25,
+                        height: screenWidth*.25,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.upload_file),
+                            Text("Upload",style: text_style,),
+                            Text("Data",style: text_style,),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -305,7 +339,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           loading=!loading;
         });
         showSnackBar("Invited SuccessFully!", context);
-        String msg = "I Invited you on balaji repo agency app .Please download our app from https://vkwilson.email/";
+        String msg = "I Invited you on Pal Associates app .Please download our app from http://vkwilson.email/";
         openwhatsapp(msg, context);})
           .catchError((error) {
         setState(() {
@@ -389,6 +423,41 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       return false;
     }
     return true;
+  }
+  void inviteadmin()async{
+    status=await checkUser();
+    if(status=="false") {
+      return phone
+          .add({
+        'number': mobile, // John Doe
+        'status': "admin", // Stokes and Sons
+      }).then((value) {
+        setState(() {
+          loading=!loading;
+        });
+        showSnackBar("Invited SuccessFully!", context);
+        String msg = "I Invited you on Pal Associates app as Admin.Please download our app from http://vkwilson.email/";
+        openwhatsapp(msg, context);})
+          .catchError((error) {
+        setState(() {
+          loading=!loading;
+        });
+        print(error.toString());
+        return showMyDialog("Error", error.toString(), context);}  );
+    }
+    else {
+      setState(() {
+        loading=true;
+      });
+      String role=status!;
+      if(status=="true") {
+        role="User";
+      }
+      showSnackBar("Number is already authorized! as $role", context);
+    }
+  }
+  void uploaddata(){
+    showSnackBar("This option is under development.Contact to development team.", context);
   }
 
 }
