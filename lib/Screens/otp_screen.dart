@@ -9,7 +9,7 @@ import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class OtpScreen extends StatefulWidget {
   final  verificationId,status,mobile;
-  const OtpScreen({Key? key, this.verificationId, this.status,this.mobile}) : super(key: key);
+  const OtpScreen({Key key, this.verificationId, this.status,this.mobile}) : super(key: key);
 
   @override
   _OtpScreenState createState() => _OtpScreenState(verificationId,status,mobile);
@@ -151,7 +151,7 @@ class _OtpScreenState extends State<OtpScreen> {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsOTP);
     try{
-      final User? user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+      final User user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool('login',false);
       showSnackBar("Verified Successfully",context);
@@ -164,7 +164,7 @@ class _OtpScreenState extends State<OtpScreen> {
         Navigator.push(context, MaterialPageRoute(builder:
             (context)=>const UserScreenHome())).then((value) => SystemNavigator.pop());
       }
-      print("Successfully signed in UID: ${user!.uid}");
+      print("Successfully signed in UID: ${user.uid}");
     }catch ( error) {
       setState(() {
         loading=true;

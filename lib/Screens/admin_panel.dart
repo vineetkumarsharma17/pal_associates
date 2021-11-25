@@ -7,7 +7,7 @@ import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/share_to_whatsapp.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 class AdminPanelScreen extends StatefulWidget {
-  const AdminPanelScreen({Key? key}) : super(key: key);
+  const AdminPanelScreen({Key key}) : super(key: key);
 
   @override
   _AdminPanelScreenState createState() => _AdminPanelScreenState();
@@ -19,7 +19,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   String mobile='';
   bool loading=true;
   var id;
-  String? status;
+  String status;
   var text_style=const TextStyle(
       color: Colors.teal,
       // fontSize: 20,
@@ -352,14 +352,14 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       setState(() {
         loading=true;
       });
-      String role=status!;
+      String role=status;
       if(status=="true") {
         role="User";
       }
       showSnackBar("User already authorized! as $role", context);
     }
   }
-  Future<String?>checkUser()async{
+  Future<String>checkUser()async{
     status="false";
     await phone
         .where('number', isEqualTo: mobile)
@@ -369,7 +369,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       querySnapshot.docs.forEach((doc) {
         id = doc.id;
         Map<String, dynamic> data =
-        doc.data()! as Map<String, dynamic>;
+        doc.data() as Map<String, dynamic>;
         status = data['status'];
         print("this is status ${status}");
         print(id);
@@ -383,7 +383,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       setState(() {
         loading=true;
       });
-      String role=status!;
+      String role=status;
       if(status=="true") {
         role="User";
       }
@@ -449,7 +449,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       setState(() {
         loading=true;
       });
-      String role=status!;
+      String role=status;
       if(status=="true") {
         role="User";
       }

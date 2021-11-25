@@ -11,7 +11,7 @@ import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   var cnumber=TextEditingController();
    String mobile='';
   bool loading=true;
-  String? id,status;
+  String id,status;
   CollectionReference phone = FirebaseFirestore.instance.collection('phone');
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -191,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(querySnapshot.docs.toString());
         querySnapshot.docs.forEach((doc) {
           id = doc.id;
-          Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           status = data['status'];
           print("this is status ${status}");
           print(id);
@@ -270,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //print("=============================verified");
           print(e);}
       },
-      codeSent: (String verificationId, int? resendToken)async {
+      codeSent: (String verificationId, int resendToken)async {
         showSnackBar("Code sent to ${mobile} Successfully",context);
        setState(() {
          loading=true;

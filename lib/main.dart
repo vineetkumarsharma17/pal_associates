@@ -24,7 +24,7 @@ void main() async{
   ));
 }
 class SpalshPage extends StatefulWidget {
-  const SpalshPage({Key? key}) : super(key: key);
+  const SpalshPage({Key key}) : super(key: key);
 
   @override
   State<SpalshPage> createState() => _SpalshPageState();

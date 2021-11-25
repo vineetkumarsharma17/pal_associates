@@ -8,7 +8,7 @@ import 'package:pal_associates/component/component.dart';
 import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 class UserScreenHome extends StatefulWidget {
-  const UserScreenHome({Key? key}) : super(key: key);
+  const UserScreenHome({Key key}) : super(key: key);
 
   @override
   _UserScreenHomeState createState() => _UserScreenHomeState();
@@ -63,7 +63,7 @@ class _UserScreenHomeState extends State<UserScreenHome> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Pal Associations"),
+        title: const Text("Pal Associates"),
         actions:  [
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
