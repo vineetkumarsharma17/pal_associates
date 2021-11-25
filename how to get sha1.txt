@@ -1,0 +1,6 @@
+./gradlew signingReport
+
+
+https://www.youtube.com/watch?v=opBwTxicw1k
+
+run this in android folder

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "797094886354",
+    "project_id": "pal-associates",
+    "storage_bucket": "pal-associates.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797094886354:android:cb5aac27567dfc5e2f260b",
+        "android_client_info": {
+          "package_name": "com.example.pal_associates"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "797094886354-4ajotv0mrklb63ov42llpl7k0hucrrc7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiZsKYXCeWtmZUDWcIrSt_f5bPmMAvBzA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "797094886354-4ajotv0mrklb63ov42llpl7k0hucrrc7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
