@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Expanded(
                             child: TextField(
                               decoration: const InputDecoration(
-                                hintText: 'Contact Number',
+                                hintText: 'Mobile Number',
                                 border: InputBorder.none,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,

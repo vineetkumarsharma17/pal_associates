@@ -35,7 +35,6 @@ class MyDrawer extends StatelessWidget {
                 width: 150,
                 child: Divider(
                   color: Colors.teal[100],
-
                 ),
               ),
               GestureDetector(

@@ -7,19 +7,22 @@ import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class OtpScreen extends StatefulWidget {
-  final  verificationId,status,mobile;
-  const OtpScreen({Key key, this.verificationId, this.status,this.mobile}) : super(key: key);
+  final verificationId, status, mobile;
+  const OtpScreen({Key key, this.verificationId, this.status, this.mobile})
+      : super(key: key);
 
   @override
-  _OtpScreenState createState() => _OtpScreenState(verificationId,status,mobile);
+  _OtpScreenState createState() =>
+      _OtpScreenState(verificationId, status, mobile);
 }
 
 class _OtpScreenState extends State<OtpScreen> {
-  final verificationId,status,mobile;
-  String smsOTP='';
-  bool loading=true;
-  String errorMessage='';
+  final verificationId, status, mobile;
+  String smsOTP = '';
+  bool loading = true;
+  String errorMessage = '';
 
   _OtpScreenState(this.verificationId, this.status, this.mobile);
 
@@ -28,11 +31,11 @@ class _OtpScreenState extends State<OtpScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: const Text("Pal Associates"),
-    // automaticallyImplyLeading: false,
-    ),
-    drawer: MyDrawer(),
+        // automaticallyImplyLeading: false,
+      ),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
@@ -64,7 +67,7 @@ class _OtpScreenState extends State<OtpScreen> {
               SizedBox(
                 height: screenHeight * 0.01,
               ),
-               Text(
+              Text(
                 //TODO number lagana hai
                 'Enter a 6 digit number that was sent to ${widget.mobile}',
                 // 'Enter A 6 digit number that was sent to ',
@@ -78,8 +81,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 height: screenHeight * 0.02,
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                padding: const EdgeInsets.all(16.0),
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     // ignore: prefer_const_literals_to_create_immutables
@@ -96,18 +99,24 @@ class _OtpScreenState extends State<OtpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      // margin: EdgeInsets.only(left: screenWidth * 0.025),
-                      child:loading? PinEntryTextField(
-                        showFieldAsBox: true,
-                        fields: 6,
-                        onSubmit: (text) {
-                          smsOTP = text as String;
-                        },
-                      ):const CircularProgressIndicator(
-                        color: Colors.yellow,
-                        backgroundColor: Colors.teal,
-                        strokeWidth: 5,
-                      ),
+                      alignment: Alignment.center,
+                      //margin: EdgeInsets.only(left: screenWidth * 0.025),
+                      child: loading
+                          ? SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: PinEntryTextField(
+                                showFieldAsBox: true,
+                                fields: 6,
+                                onSubmit: (text) {
+                                  smsOTP = text as String;
+                                },
+                              ),
+                            )
+                          : const CircularProgressIndicator(
+                              color: Colors.yellow,
+                              backgroundColor: Colors.teal,
+                              strokeWidth: 5,
+                            ),
                     ),
                     SizedBox(
                       height: screenHeight * 0.04,
@@ -115,12 +124,12 @@ class _OtpScreenState extends State<OtpScreen> {
                     GestureDetector(
                       onTap: () {
                         print(smsOTP);
-                       if(validate()){
-                         setState(() {
-                           loading=false;
-                         });
-                         verifyOTP();
-                       }
+                        if (validate()) {
+                          setState(() {
+                            loading = false;
+                          });
+                          verifyOTP();
+                        }
                       },
                       child: Container(
                         margin: const EdgeInsets.all(8),
@@ -146,30 +155,36 @@ class _OtpScreenState extends State<OtpScreen> {
       ),
     );
   }
-  void verifyOTP()async {
-    print("verify with"+smsOTP);
+
+  void verifyOTP() async {
+    print("verify with" + smsOTP);
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsOTP);
-    try{
-      final User user = (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+    try {
+      final User user =
+          (await FirebaseAuth.instance.signInWithCredential(credential)).user;
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('login',false);
-      showSnackBar("Verified Successfully",context);
-      if(status=="admin") {
-        prefs.setString('type',"admin");
-        Navigator.push(context, MaterialPageRoute(builder:
-            (context)=>const AdminPanelScreen())).then((value) => SystemNavigator.pop());
+      prefs.setBool('login', false);
+      showSnackBar("Verified Successfully", context);
+      if (status == "admin") {
+        prefs.setString('type', "admin");
+        Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AdminPanelScreen()))
+            .then((value) => SystemNavigator.pop());
       } else {
-        prefs.setString('type',"user");
-        Navigator.push(context, MaterialPageRoute(builder:
-            (context)=>const UserScreenHome())).then((value) => SystemNavigator.pop());
+        prefs.setString('type', "user");
+        Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const UserScreenHome()))
+            .then((value) => SystemNavigator.pop());
       }
       print("Successfully signed in UID: ${user.uid}");
-    }catch ( error) {
+    } catch (error) {
       setState(() {
-        loading=true;
+        loading = true;
       });
-      if(error is FirebaseAuthException) {
+      if (error is FirebaseAuthException) {
         switch (error.code) {
           case "invalid-verification-code":
             errorMessage = "Wrong Otp!.";
@@ -188,12 +203,12 @@ class _OtpScreenState extends State<OtpScreen> {
       }
     }
   }
-  bool validate(){
-    if(smsOTP.isEmpty) {
+
+  bool validate() {
+    if (smsOTP.isEmpty) {
       showSnackBar("Empty Otp", context);
       return false;
-    }else
-    if(smsOTP.length!=6){
+    } else if (smsOTP.length != 6) {
       showSnackBar("Otp must have 6 digits!", context);
       return false;
     }
