@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pal_associates/Screens/admin_panel.dart';
 import 'package:pal_associates/Screens/otp_screen.dart';
+import 'package:pal_associates/Screens/admin_search.dart';
 import 'package:pal_associates/Screens/user_homepage.dart';
 import 'package:pal_associates/component/alertdilog.dart';
 import 'package:pal_associates/component/component.dart';
+import 'package:pal_associates/component/constrainst.dart';
 import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
 
@@ -18,172 +21,242 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var cnumber=TextEditingController();
-   String mobile='';
-  bool loading=true;
-  String id,status;
+  var mobileCtrl = TextEditingController();
+  String mobile = '';
+  bool loading = true;
+  String id, status;
   CollectionReference phone = FirebaseFirestore.instance.collection('phone');
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: const Text("Pal Associates"),
-    // automaticallyImplyLeading: false,
-    ),
-    drawer: MyDrawer(),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: screenHeight * 0.05,
+        // automaticallyImplyLeading: false,
+      ),
+      drawer: MyDrawer(),
+      body: Stack(
+        children: [
+          Positioned(
+            // top: 9,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 300,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/otp.webp"),
+                    fit: BoxFit.fill),
               ),
-              Image.asset(
-                'assets/images/registration.png',
-                height: screenHeight * 0.2,
-                fit: BoxFit.contain,
-              ),
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
-
-              const Text(
-                'Log  In',
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.teal,
-                  fontFamily: "Anton",
-                ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
-              const Text(
-                'Enter your mobile number to receive a verification code',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.04,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: screenWidth > 600 ? screenWidth * 0.2 : 16),
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    boxShadow: [
-                      const BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(16.0)),
-                child: Column(
-                  children: [
-                    loading?Container(
-                      margin: const EdgeInsets.all(8),
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      height: 45,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 253, 188, 51),
-                        ),
-                        borderRadius: BorderRadius.circular(36),
-                      ),
-                      child: Row(
-                        // ignore: prefer_const_literals_to_create_immutables
+            ),
+          ),
+          // main Container for login and Signup
+          Positioned(
+            top: 200,
+            child: Container(
+              height: 380,
+              padding: EdgeInsets.all(20),
+              width: MediaQuery.of(context).size.width - 40,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 15,
+                        spreadRadius: 5),
+                  ]),
+              child: Column(
+                children: [
+                  Positioned(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 25),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          RichText(
+                            text: TextSpan(
+                                text: "   Welcome to",
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.yellow[700],
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "\nPal Associates,",
+                                    style: TextStyle(
+                                      letterSpacing: 1,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.teal,
+                                    ),
+                                  )
+                                ]),
+                          ),
                           SizedBox(
-                            width: screenWidth * 0.01,
+                            height: 10,
                           ),
-                          Expanded(
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                hintText: 'Mobile Number',
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                prefixText: "+91",
-                                contentPadding: EdgeInsets.symmetric(vertical: 13.5),
-                              ),
-                              controller: cnumber,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                          Container(
+                            // margin: EdgeInsets.only(left: 60),
+                            child: Text(
+                              "Signin to Continue",
+                              style: TextStyle(
+                                  letterSpacing: 3, color: Colors.blueGrey),
                             ),
-                          ),
+                          )
                         ],
                       ),
-                    ):const CircularProgressIndicator(
-                      color: Colors.yellow,
-                      backgroundColor: Colors.teal,
-                      strokeWidth: 5,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    GestureDetector(
-                      onTap: (){
-                        mobile=cnumber.text;
-                       if(validate()){
-                         setState(() {
-                           loading=false;
-                         });
-                         checkUser();
-                       }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        height: 45,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 253, 188, 51),
-                          borderRadius: BorderRadius.circular(36),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 50),
+                    // padding: EdgeInsets.only(),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: mobileCtrl,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: Palette.iconColor,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Palette.textColor1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(35.0)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Palette.textColor1),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(35.0)),
+                            ),
+                            prefix: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 1),
+                              child: Text(
+                                "(+91)",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.all(20),
+                            hintText: "Enter Mobile Number",
+                            hintStyle: TextStyle(
+                                fontSize: 14, color: Palette.textColor1),
+                          ),
                         ),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Send OTP',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
+                        SizedBox(
+                          height: 15,
                         ),
-                      ),
+                        Container(
+                          width: 200,
+                          margin: EdgeInsets.only(top: 20),
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                                text: "By pressing 'Submit' you agree to our ",
+                                style: TextStyle(color: Palette.textColor2),
+                                children: [
+                                  TextSpan(
+                                    // recognizer: ,
+                                    text: "term & conditions",
+                                    style: TextStyle(color: Colors.orange),
+                                  )
+                                ]),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ],
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
+          //Trick to add the submit button
+          Positioned(
+            top: 535,
+            right: 0,
+            left: 0,
+            child: Center(
+              child: Container(
+                height: 90,
+                width: 90,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.3),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: Offset(0, 1),
+                      ),
+                    ]),
+                child: GestureDetector(
+                  onTap: () {
+                    mobile = mobileCtrl.text;
+                    if (validate()) {
+                      setState(() {
+                        loading = false;
+                      });
+                      checkUser();
+                    }
+                    //  sendOtp();
+                  },
+                  child: loading
+                      ? Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [Colors.orange, Colors.red],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(.3),
+                                  spreadRadius: 1,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1),
+                                ),
+                              ]),
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
+                        )
+                      : CircularProgressIndicator(),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-  bool validate(){
-    if(mobile.isEmpty) {
+
+  bool validate() {
+    if (mobile.isEmpty) {
       showSnackBar("Empty Mobile", context);
       return false;
-    }else
-    if(mobile.length!=10){
+    } else if (mobile.length != 10) {
       showSnackBar("Invalid mobile number!", context);
       return false;
     }
     return true;
   }
-  void checkUser()async{
-    status="false";
-    var errorMessage="";
+
+  void checkUser() async {
+    status = "false";
+    var errorMessage = "";
     print(mobile);
-    try{
+    try {
       await phone
           .where('number', isEqualTo: mobile)
           .get()
@@ -197,11 +270,11 @@ class _LoginScreenState extends State<LoginScreen> {
           print(id);
         });
       });
-    }catch(error){
+    } catch (error) {
       setState(() {
-        loading=true;
+        loading = true;
       });
-      if(error is FirebaseAuthException) {
+      if (error is FirebaseAuthException) {
         print(error.code);
         switch (error.code) {
           case "invalid-verification-code":
@@ -220,13 +293,10 @@ class _LoginScreenState extends State<LoginScreen> {
         showSnackBar(errorMessage, context);
       }
     }
-    if (status == "true"||status=="admin") {
-      phone
-          .doc(id)
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
+    if (status == "true" || status == "admin") {
+      phone.doc(id).get().then((DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
-         sendOTP();
+          sendOTP();
           // showMyDialog("Success", "Authorised", context);
         } else {
           print("not exist");
@@ -236,65 +306,86 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } else {
       setState(() {
-        loading=true;
+        loading = true;
       });
-      String msg="You are not authorized to use this app\nPlease Contact to Sunil Pal.";
+      String msg =
+          "You are not authorized to use this app\nPlease Contact to Sunil Pal.";
       showMyDialog("Failed", msg, context);
     }
   }
-  void sendOTP()async{
-    try{auth.verifyPhoneNumber(
-      phoneNumber: '+91'+mobile,
-      timeout: Duration(seconds: 25),
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await auth.signInWithCredential(credential);
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('login',false);
-        showSnackBar("Verified Successfully",context);
-        if(status=="admin") {
-          prefs.setString('type',"admin");
-          Navigator.push(context, MaterialPageRoute(builder:
-              (context)=>const AdminPanelScreen())).then((value) => SystemNavigator.pop());
-        } else {
-          prefs.setString('type',"user");
-          Navigator.push(context, MaterialPageRoute(builder:
-              (context)=>const UserScreenHome())).then((value) => SystemNavigator.pop());
-        }
-      },
-      verificationFailed: (FirebaseAuthException e) {
+
+  void sendOTP() async {
+    try {
+      auth
+          .verifyPhoneNumber(
+        phoneNumber: '+91' + mobile,
+        timeout: Duration(seconds: 25),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await auth.signInWithCredential(credential);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool('login', false);
+          prefs.setString('number', mobile);
+          showSnackBar("Verified Successfully", context);
+          if (status == "admin") {
+            prefs.setString('type', "admin");
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AdminPanelScreen()))
+                .then((value) => SystemNavigator.pop());
+          } else {
+            prefs.setString('type', "user");
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UserScreenHome()))
+                .then((value) => SystemNavigator.pop());
+          }
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          setState(() {
+            loading = true;
+          });
+          if (e.code == 'invalid-phone-number') {
+            print('The provided phone number is not valid.');
+            //print("=============================verified");
+            print(e);
+          }
+        },
+        codeSent: (String verificationId, int resendToken) async {
+          showSnackBar("Code sent to ${mobile} Successfully", context);
+
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          setState(() {
+            prefs.setString('number', mobile);
+            loading = true;
+          });
+          print("code sent to " + mobile);
+          print(verificationId);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => OtpScreen(
+                        verificationId: verificationId,
+                        status: status,
+                        mobile: mobile,
+                      )));
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          print("=============================timeout");
+          print("Timeout");
+        },
+      )
+          .catchError((e) {
         setState(() {
-          loading=true;
+          loading = true;
         });
-        if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
-          //print("=============================verified");
-          print(e);}
-      },
-      codeSent: (String verificationId, int resendToken)async {
-        showSnackBar("Code sent to ${mobile} Successfully",context);
-       setState(() {
-         loading=true;
-       });
-        print("code sent to "+mobile);
-        print(verificationId);
-        Navigator.push(context, MaterialPageRoute(builder:
-            (context)=>OtpScreen(verificationId: verificationId,status: status,mobile: mobile,)));
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        print("=============================timeout");
-        print("Timeout");
-      },
-    ).catchError((e){
-      setState(() {
-        loading=true;
+        print("error==========cathcj");
+        print(e.toString());
       });
-      print("error==========cathcj");
-      print(e.toString());
-    });
-    }
-    on FirebaseAuthException catch  (e) {
+    } on FirebaseAuthException catch (e) {
       setState(() {
-        loading=true;
+        loading = true;
       });
       print('Failed with error code: ${e.code}');
       print(e.message);

@@ -4,24 +4,28 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
-import 'package:pal_associates/component/alertdilog.dart';
-import 'package:pal_associates/component/component.dart';
-import 'package:pal_associates/component/drawer.dart';
+import 'package:pal_associates/component/constrainst.dart';
 import 'package:pal_associates/component/share_to_whatsapp.dart';
 import 'package:pal_associates/component/snack_bar.dart';
+import 'package:http/http.dart' as http;
 
 class UserScreenHome extends StatefulWidget {
   const UserScreenHome({Key key}) : super(key: key);
 
   @override
-  _UserScreenHomeState createState() => _UserScreenHomeState();
+  State<UserScreenHome> createState() => _UserScreenHomeState();
 }
 
 class _UserScreenHomeState extends State<UserScreenHome> {
   String query = '';
   bool loading = true;
-  List data = [];
+  List data = [
+    "UP32HJ8978",
+    "UP32HJ8978",
+    "UP32HJ8978",
+    "UP32HJ8978",
+    "UP32HJ8978"
+  ];
   bool dataget = true;
   var rc_number = TextEditingController();
   // List data = [];
@@ -59,7 +63,7 @@ class _UserScreenHomeState extends State<UserScreenHome> {
           dataget = false;
           data = obj["data"];
           log(data.toString());
-          log(data.toString());
+          // log(data.toString());
           loading = true;
         });
       } else {
@@ -82,229 +86,178 @@ class _UserScreenHomeState extends State<UserScreenHome> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pal Associates"),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 15.0),
-              child: IconButton(
-                  onPressed: () => showExitDialog(
-                      "Alert!", "Are you sure to exit?", context),
-                  icon: const Icon(Icons.logout))),
-        ],
-        // automaticallyImplyLeading: false,
-      ),
-      drawer: MyDrawer(),
       body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(16.0),
-          width: double.infinity,
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
-              const Text(
-                'Welcome User! ',
-                style: TextStyle(
-                  fontSize: 33,
-                  color: Colors.teal,
-                  fontFamily: "Pacifico",
-                ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: screenWidth > 600 ? screenWidth * 0.2 : 16),
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    boxShadow: [
-                      const BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
+        child: Column(
+          children: [
+            Container(
+              height: 550,
+              color: Colors.yellow,
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: 0,
+                    left: 0,
+                    child: Container(
+                      height: 300,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/highway.jpg"),
+                            fit: BoxFit.fill),
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(16.0)),
-                child: Column(
-                  children: [
-                    loading
-                        ? Container(
-                            margin: const EdgeInsets.all(8),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            height: 45,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 253, 188, 51),
-                              ),
-                              borderRadius: BorderRadius.circular(36),
+                    ),
+                  ),
+                  // main Container for login and Signup
+                  Positioned(
+                    top: 200,
+                    child: Container(
+                      height: 280,
+                      padding: EdgeInsets.all(20),
+                      width: MediaQuery.of(context).size.width - 40,
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                blurRadius: 15,
+                                spreadRadius: 5),
+                          ]),
+                      child: ListView(
+                        children: [
+                          Center(
+                            child: Text(
+                              "Hello ! User",
+                              style: TextStyle(
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.teal),
                             ),
-                            child: Row(
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                SizedBox(
-                                  width: screenWidth * 0.01,
-                                ),
-                                Expanded(
-                                  child: TextField(
-                                    controller: rc_number,
-                                    keyboardType: TextInputType.text,
-                                    decoration: const InputDecoration(
-                                      hintText: 'Enter 4 digits ie.1234',
-                                      border: InputBorder.none,
-                                      // enabledBorder: InputBorder.none,
-                                      // focusedBorder: InputBorder.none,
-                                      contentPadding:
-                                          EdgeInsets.symmetric(vertical: 13.5),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : const CircularProgressIndicator(
-                            color: Colors.yellow,
-                            backgroundColor: Colors.teal,
-                            strokeWidth: 5,
                           ),
-                    const SizedBox(
-                      height: 8,
+                          SizedBox(height: 40),
+                          TextField(
+                            controller: rc_number,
+                            keyboardType: TextInputType.number,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Palette.iconColor,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Palette.textColor1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(35.0)),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Palette.textColor1),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(35.0)),
+                              ),
+                              contentPadding: EdgeInsets.all(20),
+                              hintText: "Enter 4 digit ie:1234",
+                              hintStyle: TextStyle(
+                                  fontSize: 16, color: Palette.textColor1),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
+                        ],
+                      ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        if (validate()) {
-                          setState(() {
-                            loading = !loading;
-                          });
-                          search();
-                        }
-                        // setState(() {
-                        //   dataget = !dataget;
-                        // });
-                      },
+                  ),
+                  //Trick to add the submit button
+                  Positioned(
+                    top: 435,
+                    right: 0,
+                    left: 0,
+                    child: Center(
                       child: Container(
-                        margin: const EdgeInsets.all(8),
-                        height: 45,
-                        width: double.infinity,
+                        height: 90,
+                        width: 90,
+                        padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 253, 188, 51),
-                          borderRadius: BorderRadius.circular(36),
-                        ),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Search',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(.3),
+                                spreadRadius: 1,
+                                blurRadius: 2,
+                                offset: Offset(0, 1),
+                              ),
+                            ]),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              //loading = !loading;
+                              dataget = !dataget;
+                            });
+                            // if (validate()) {
+                            //   setState(() {
+                            //     //loading = !loading;
+                            //     dataget = !dataget;
+                            //   });
+                            //   search();
+                            // }
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) => Profile()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Colors.orange, Colors.red],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight),
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(.3),
+                                    spreadRadius: 1,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 1),
+                                  ),
+                                ]),
+                            child: Icon(
+                              Icons.search,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              dataget
-                  ? const Text("")
-                  : ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        String msg = '';
-                        for (var x in data[index].keys) {
-                          msg += x.toString() +
-                              ": " +
-                              data[index][x].toString() +
-                              "\n";
-                        }
-                        double width = MediaQuery.of(context).size.width - 6;
-                        Map detail = data[index];
-                        return Card(
-                            color: Colors.orange,
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: detail.length,
-                                      itemBuilder: (context, i) {
-                                        String key = detail.keys.elementAt(i);
-                                        return Row(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(top: 3),
-                                              width: width * .35,
-                                              child: Text(
-                                                "$key",
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  const EdgeInsets.only(top: 3),
-                                              width: width * .02,
-                                              child: const Text(
-                                                ":",
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  const EdgeInsets.only(top: 3),
-                                              width: width * .45,
-                                              child: Text(
-                                                "${detail[key]}",
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
-                                        );
-                                      }),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            log(msg);
-                                            openwhatsapp(msg, context);
-                                          },
-                                          icon: const Icon(
-                                            Icons.share,
-                                            color: Colors.white,
-                                          )),
-                                      IconButton(
-                                          onPressed: () {
-                                            Clipboard.setData(
-                                                ClipboardData(text: msg));
-                                            showSnackBar(
-                                                "Text Coppied!", context);
-                                          },
-                                          icon: const Icon(
-                                            Icons.copy,
-                                            color: Colors.white,
-                                          )),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ));
-                      }),
-            ],
-          ),
+            ),
+            dataget
+                ? const Text("")
+                : ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                          onTap: () {
+                            Clipboard.setData(
+                                ClipboardData(text: data[index].toString()));
+                            showSnackBar("Text Coppied!", context);
+                          },
+                          leading: Icon(Icons.star),
+                          trailing: IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.share),
+                          ),
+                          title: Text(data[index].toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold)));
+                    }),
+          ],
         ),
       ),
     );

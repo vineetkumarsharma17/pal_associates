@@ -5,12 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:pal_associates/Screens/user_homepage.dart';
+import 'package:pal_associates/Screens/admin_search.dart';
 import 'package:pal_associates/component/alertdilog.dart';
 import 'package:pal_associates/component/component.dart';
 import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/share_to_whatsapp.dart';
 import 'package:pal_associates/component/snack_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({Key key}) : super(key: key);
@@ -326,7 +327,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UserScreenHome()));
+                                builder: (context) => AdminSearchScreen()));
                       },
                       child: Container(
                         padding: EdgeInsets.all(8),
@@ -447,20 +448,29 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
   }
 
   void blockUser() async {
-    status = await checkUser();
-    if (status == "true" || status == "admin") {
-      phone
-          .doc(id)
-          .delete()
-          .then((value) => showSnackBar("Blocked Successfully", context))
-          .catchError((error) =>
-              showSnackBar("Failed to update user: $error", context));
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (pref.getString("number") != mobile) {
+      status = await checkUser();
+      if (status == "true" || status == "admin") {
+        phone
+            .doc(id)
+            .delete()
+            .then((value) => showSnackBar("Blocked Successfully", context))
+            .catchError((error) =>
+                showSnackBar("Failed to update user: $error", context));
+      } else {
+        showSnackBar("User already Blocked", context);
+      }
+      setState(() {
+        loading = true;
+      });
     } else {
-      showSnackBar("User already Blocked", context);
+      setState(() {
+        loading = true;
+      });
+      showMyDialog(
+          "Alert", "For security reason you can't block yourself.", context);
     }
-    setState(() {
-      loading = true;
-    });
   }
 
   bool validate() {
@@ -548,44 +558,5 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       return false;
     }
     return true;
-  }
-
-  search() async {
-    setState(() {
-      loading2 = false;
-    });
-    query = cquery.text;
-    var data = {
-      "data": query,
-    };
-    var response = await http
-        .post(Uri.parse("http://vkwilson.email/getdata.php"),
-            body: json.encode(data))
-        .catchError((e) {
-      setState(() {
-        loading2 = true;
-      });
-      if (e is SocketException)
-        return showSnackBar("No internet connection", context);
-    });
-    var obj = jsonDecode(response.body);
-    if (obj["status"] == 1) {
-      Map tmp = obj["data"];
-      print("Data========================");
-      String detail = '';
-      for (var x in tmp.keys) {
-        detail = detail + "$x=${tmp[x]}\n";
-        // print("$x=${tmp[x]}");
-
-      }
-      showDataDialog("Data Found!", detail, context);
-      // print(detail);
-    } else {
-      showSnackBar("No data found", context);
-    }
-    setState(() {
-      // cquery.clear();
-      loading2 = true;
-    });
   }
 }

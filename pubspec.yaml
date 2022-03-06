@@ -38,11 +38,12 @@ dependencies:
   flutter_lints: ^1.0.0
   firebase_auth: ^3.2.0
   firebase_core: ^1.10.0
-  shared_preferences: ^2.0.8
+  shared_preferences: 
   firebase_database: ^8.1.0
   http: ^0.13.3
-  url_launcher: ^6.0.15
-  share_plus: ^3.0.4
+  url_launcher:
+  otp_text_field: ^1.1.2
+  share_plus:
   cloud_firestore: ^3.1.0
 
 dev_dependencies:

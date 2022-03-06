@@ -1,8 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
 import 'package:pal_associates/Screens/admin_panel.dart';
+import 'package:pal_associates/Screens/admin_search.dart';
 import 'package:pal_associates/Screens/user_homepage.dart';
+import 'package:pal_associates/component/constrainst.dart';
 import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/snack_bar.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
@@ -36,122 +40,148 @@ class _OtpScreenState extends State<OtpScreen> {
         // automaticallyImplyLeading: false,
       ),
       drawer: MyDrawer(),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: screenHeight * 0.02,
+      body: Stack(
+        children: [
+          Positioned(
+            //top: 9,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 300,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/otp.webp"),
+                    fit: BoxFit.fill),
               ),
-              Image.asset(
-                'assets/images/verification.png',
-                height: screenHeight * 0.2,
-                fit: BoxFit.contain,
+            ),
+          ),
+          // main Container for login and Signup
+          Positioned(
+            top: 200,
+            child: Container(
+              height: 380,
+              padding: EdgeInsets.all(20),
+              width: MediaQuery.of(context).size.width - 40,
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 15,
+                        spreadRadius: 5),
+                  ]),
+              child: ListView(
+                children: [
+                  Center(
+                    child: Text(
+                      "Verification",
+                      style: TextStyle(
+                          letterSpacing: 1.5,
+                          fontSize: 34,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.teal),
+                    ),
+                  ),
+                  SizedBox(height: 40),
+                  OTPTextField(
+                    length: 6,
+                    //width: MediaQuery.of(context).size.width,
+                    fieldWidth: 40,
+                    style: TextStyle(fontSize: 17),
+                    textFieldAlignment: MainAxisAlignment.spaceAround,
+                    fieldStyle: FieldStyle.box,
+                    onCompleted: (pin) {
+                      setState(() {
+                        smsOTP = pin;
+                      });
+                      print("Completed: " + pin);
+                    },
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    width: 200,
+                    margin: EdgeInsets.only(top: 20),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                          text: "By pressing 'Submit' you agree\n to our ",
+                          style: TextStyle(color: Palette.textColor2),
+                          children: [
+                            TextSpan(
+                              // recognizer: ,
+                              text: "term & conditions",
+                              style: TextStyle(color: Colors.orange),
+                            )
+                          ]),
+                    ),
+                  )
+                ],
               ),
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
-              const Text(
-                'VERIFICATION',
-                style: TextStyle(
-                  fontSize: 28,
-                  letterSpacing: 4,
-                  color: Colors.teal,
-                  fontFamily: "Anton",
-                ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.01,
-              ),
-              Text(
-                //TODO number lagana hai
-                'Enter a 6 digit number that was sent to ${widget.mobile}',
-                // 'Enter A 6 digit number that was sent to ',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: Colors.black,
-                ),
-              ),
-              SizedBox(
-                height: screenHeight * 0.02,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+            ),
+          ),
+          //Trick to add the submit button
+          Positioned(
+            top: 535,
+            right: 0,
+            left: 0,
+            child: Center(
+              child: Container(
+                height: 90,
+                width: 90,
+                padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    // ignore: prefer_const_literals_to_create_immutables
+                    borderRadius: BorderRadius.circular(50),
                     boxShadow: [
-                      const BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 1.0), //(x,y)
-                        blurRadius: 6.0,
+                      BoxShadow(
+                        color: Colors.black.withOpacity(.3),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: Offset(0, 1),
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(16.0)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      //margin: EdgeInsets.only(left: screenWidth * 0.025),
-                      child: loading
-                          ? SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: PinEntryTextField(
-                                showFieldAsBox: true,
-                                fields: 6,
-                                onSubmit: (text) {
-                                  smsOTP = text as String;
-                                },
-                              ),
-                            )
-                          : const CircularProgressIndicator(
-                              color: Colors.yellow,
-                              backgroundColor: Colors.teal,
-                              strokeWidth: 5,
-                            ),
-                    ),
-                    SizedBox(
-                      height: screenHeight * 0.04,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        print(smsOTP);
-                        if (validate()) {
-                          setState(() {
-                            loading = false;
-                          });
-                          verifyOTP();
-                        }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        height: 45,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 253, 188, 51),
-                          borderRadius: BorderRadius.circular(36),
-                        ),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Verify',
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ]),
+                child: GestureDetector(
+                  onTap: () {
+                    // verify();
+                    print(smsOTP);
+                    if (validate()) {
+                      setState(() {
+                        loading = false;
+                      });
+                      verifyOTP();
+                    }
+                  },
+                  child: loading
+                      ? Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [Colors.orange, Colors.red],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(.3),
+                                  spreadRadius: 1,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 1),
+                                ),
+                              ]),
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: Colors.white,
+                          ),
+                        )
+                      : CircularProgressIndicator(),
                 ),
-              )
-            ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
