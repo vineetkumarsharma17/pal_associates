@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:pal_associates/Screens/admin_search.dart';
+import 'package:pal_associates/Screens/user_list.dart';
 import 'package:pal_associates/component/alertdilog.dart';
 import 'package:pal_associates/component/component.dart';
 import 'package:pal_associates/component/drawer.dart';
@@ -322,48 +323,97 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AdminSearchScreen()));
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0.0, 1.0), //(x,y)
-                              blurRadius: 6.0,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdminSearchScreen()));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
+                                ),
+                              ],
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromARGB(255, 253, 188, 51),
+                              ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(36),
                             ),
-                          ],
-                          border: Border.all(
-                            width: 2,
-                            color: const Color.fromARGB(255, 253, 188, 51),
+                            margin: EdgeInsets.all(10),
+                            width: screenWidth * .25,
+                            height: screenWidth * .25,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search),
+                                Text(
+                                  "Search",
+                                  style: text_style,
+                                ),
+                                Text(
+                                  "Data",
+                                  style: text_style,
+                                ),
+                              ],
+                            ),
                           ),
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(36),
                         ),
-                        margin: EdgeInsets.all(10),
-                        width: screenWidth * .25,
-                        height: screenWidth * .25,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.upload_file),
-                            Text(
-                              "Search",
-                              style: text_style,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => User_List()));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 1.0), //(x,y)
+                                  blurRadius: 6.0,
+                                ),
+                              ],
+                              border: Border.all(
+                                width: 2,
+                                color: const Color.fromARGB(255, 253, 188, 51),
+                              ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(36),
                             ),
-                            Text(
-                              "Data",
-                              style: text_style,
+                            margin: EdgeInsets.all(10),
+                            width: screenWidth * .25,
+                            height: screenWidth * .25,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.person),
+                                Text(
+                                  "User",
+                                  style: text_style,
+                                ),
+                                Text(
+                                  "List",
+                                  style: text_style,
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 )

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pal_associates/Screens/admin_panel.dart';
 import 'package:pal_associates/Screens/admin_search.dart';
+import 'package:pal_associates/Screens/user_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/login_screen.dart';
 import 'Screens/user_homepage.dart';
@@ -21,8 +22,8 @@ void main() async {
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(backgroundColor: Colors.teal)),
     debugShowCheckedModeBanner: false,
-    // home: SpalshPage(),
-    home: UserScreenHome(),
+    home: SpalshPage(),
+    // home: UserProfile(),
   ));
 }
 
@@ -130,7 +131,8 @@ class _SpalshPageState extends State<SpalshPage> {
   void check_if_already() async {
     print("data=============");
     print(await preferences.getBool('login'));
-    bool loginstatus = await preferences.getBool('login') ?? true;
+    bool loginstatus = preferences.getBool('login') ?? true;
+    bool isregisterd = preferences.getBool('isResister') ?? false;
     if (loginstatus == false) {
       if (preferences.getString("type") == "admin") {
         Navigator.push(
@@ -139,9 +141,15 @@ class _SpalshPageState extends State<SpalshPage> {
                     builder: (context) => const AdminPanelScreen()))
             .then((value) => SystemNavigator.pop());
       } else if (preferences.getString("type") == "user") {
-        Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const UserScreenHome()))
-            .then((value) => SystemNavigator.pop());
+        if (isregisterd) {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const UserScreenHome()))
+              .then((value) => SystemNavigator.pop());
+        } else
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const UserProfile()));
       } else {
         Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const LoginScreen()))

@@ -35,7 +35,7 @@ class _AdminSearchScreenState extends State<AdminSearchScreen> {
       "data": query,
     };
     var response = await http
-        .post(Uri.parse("http://vkwilson.email/getdata.php"),
+        .post(Uri.parse("http://vkwilson.email/getdataadmin.php"),
             body: json.encode(prm))
         .timeout(const Duration(seconds: 34), onTimeout: () {
       showSnackBar("Time out", context);

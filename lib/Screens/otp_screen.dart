@@ -6,6 +6,7 @@ import 'package:otp_text_field/style.dart';
 import 'package:pal_associates/Screens/admin_panel.dart';
 import 'package:pal_associates/Screens/admin_search.dart';
 import 'package:pal_associates/Screens/user_homepage.dart';
+import 'package:pal_associates/Screens/user_profile_screen.dart';
 import 'package:pal_associates/component/constrainst.dart';
 import 'package:pal_associates/component/drawer.dart';
 import 'package:pal_associates/component/snack_bar.dart';
@@ -206,7 +207,7 @@ class _OtpScreenState extends State<OtpScreen> {
       } else {
         prefs.setString('type', "user");
         Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const UserScreenHome()))
+                MaterialPageRoute(builder: (context) => const UserProfile()))
             .then((value) => SystemNavigator.pop());
       }
       print("Successfully signed in UID: ${user.uid}");
