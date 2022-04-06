@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:pal_associates/Screens/admin_search.dart';
+import 'package:pal_associates/Screens/user_homepage.dart';
 import 'package:pal_associates/Screens/user_list.dart';
 import 'package:pal_associates/component/alertdilog.dart';
 import 'package:pal_associates/component/component.dart';
@@ -332,7 +333,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AdminSearchScreen()));
+                                    builder: (context) => UserScreenHome()));
                           },
                           child: Container(
                             padding: EdgeInsets.all(8),

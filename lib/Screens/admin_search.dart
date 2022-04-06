@@ -44,11 +44,12 @@ class _AdminSearchScreenState extends State<AdminSearchScreen> {
       });
       throw ("Error");
     }).catchError((e) {
+      log(e.toString());
+      if (e is SocketException)
+        return showSnackBar("No internet connection", context);
       setState(() {
         loading = true;
       });
-      if (e is SocketException)
-        return showSnackBar("No internet connection", context);
     });
     try {
       log("Runnning===========");

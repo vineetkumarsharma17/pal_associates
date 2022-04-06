@@ -57,6 +57,7 @@ class _UserScreenHomeState extends State<UserScreenHome> {
         setState(() {
           data = obj["data"];
           log(data.toString());
+          showSnackBar("${data.length} results found.", context);
           // log(data.toString());
           loading = true;
         });
@@ -144,7 +145,7 @@ class _UserScreenHomeState extends State<UserScreenHome> {
                         const SizedBox(height: 40),
                         TextField(
                           controller: rc_number,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.text,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
